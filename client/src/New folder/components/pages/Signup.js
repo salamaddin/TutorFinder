@@ -35,7 +35,7 @@ export default function Signup() {
 
     const data = await res.json();
     if(res.status === 422 || !data){
-      window.alert("Invalid Registration");
+      window.alert(data.error);
     }else{
       window.alert("Registration sucessfull");
       navigate('/login')

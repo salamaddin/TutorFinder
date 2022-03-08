@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken');
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const User = require("../db/userSchema");
+const {User} = require("../db/userSchema");
+const Teacher = require("../db/teacherSchema");
 const authenticate = require('../middleWares/authenticate');
 // const cookieParser =require("cookie-parser");
 // router.use(cookieParser());
@@ -63,9 +64,11 @@ try{
         return res.status(422).json({error: "Email already exist"});
     }
 
-    const user = new User({ name, email, password, cpassword});
-
-    await user.save();
+    const user = new User({ name, email, password});
+     await user.save();
+    // const teacher = new Teacher({ name, email, password});
+    // await teacher.save();
+    
     res.status(200).json({message: "user registered successful"});
         
 }catch(err){
@@ -130,5 +133,62 @@ router.get('/logout', (req,res)=>{
     res.clearCookie('jwttoken', {path:'/'});
     res.status(200).send('user logout');
 });
+
+
+
+// for tutor profile
+router.post('/tutor', async(req,res)=>{
+
+    const {name, email, phone, category, locality,teaching_mood, degree,  password} = req.body; 
+
+     if(!name || !email || !password){
+         return res.status(422).json({error: "plz fill the field properly"});
+
+    }
+  
+      // if(password !== cpassword){
+    //     return res.status(422).json({error: "password is not matching"});   
+    // }
+try{
+    const userExist = await Teacher.findOne({email:email});
+
+    if(userExist){
+        return res.status(422).json({error: "Email already exist"});
+    }
+
+    const teacher = new Teacher({ name, email, phone, category, locality,teaching_mood, degree,  password});
+     await teacher.save();
+    // const teacher = new Teacher({ name, email, password});
+    // await teacher.save();
+    
+    res.status(200).json({message: "Your profile has been created "});
+        
+}catch(err){
+    res.status(500).json({ error: 'falied to register'});
+    console.log(err);
+}
+
+});
+
+
+
+// for fetch teacher
+router.post('/tutordata', async(req,res)=>{
+    const {category} = req.body; 
+try{
+    const data = await Teacher.find({category:category});
+    if(!data){
+        return res.status(422).send("No Record Found");
+    }
+
+    res.status(200).send(data);
+        
+}catch(err){
+    res.status(500).json({ error: 'Server error'});
+    console.log(err);
+}
+
+});
+
 
 module.exports = router;

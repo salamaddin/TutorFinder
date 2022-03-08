@@ -12,6 +12,9 @@ import { Logout } from "./pages/logout";
 import React,{createContext, useReducer} from "react";
 import { initialState, reducer } from "../../reducer/useReducer";
 import Nav from "./Nav";
+import Cards from "./Cards";
+import OutlinedCard from "./Card";
+
 
 export const UserContext = createContext();
  
@@ -20,7 +23,8 @@ const Routing = () =>{
   return(
     <BrowserRouter> 
     <Layout>   
-     <Routes>
+      <OutlinedCard/>
+     {/* <Routes>
        <Route path="/" element={<Navigate to="/home" />} />
          <Route path='/home' element={<Home />} />
          <Route path='/signup' element={<Signup />} />
@@ -28,7 +32,7 @@ const Routing = () =>{
          <Route path='/contact' element={<Contact />} />
          <Route path='/about' element={<About />} />
          <Route path='/logout' element={<Logout />} />   
-       </Routes>
+       </Routes> */}
     </Layout>
  </BrowserRouter>
   )

@@ -23,10 +23,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    cpassword: {
-        type: String,
-        required: true
-    },
+    // cpassword: {
+    //     type: String,
+    //     required: true
+    // },
     tokens: [
         {
             token: {
@@ -36,7 +36,6 @@ const userSchema = new mongoose.Schema({
         }
     ]
 });
-
 
 
 //middleware hasing password
@@ -63,4 +62,4 @@ userSchema.methods.generateAuthToken = async function (){
 
 const User = mongoose.model('USER',userSchema);
 
-module.exports = User;
+module.exports = {User};
